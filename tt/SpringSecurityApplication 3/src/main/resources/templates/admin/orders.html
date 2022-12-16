@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы</title>
+</head>
+<body>
+<h3>Заказы</h3>
+<form th:method="POST" th:action="@{/admin/orders/search}">
+    <fieldset>
+        <input type="text" th:name="orderNum" maxlength="4">
+        <input type="submit">
+    </fieldset>
+</form>
+<div th:each="order : ${orders}">
+    <h3 th:text="'Заказ № ' + ${order.getNumber()}"></h3>
+    <img th:src="'/img/' + ${order.getProduct().imageList[0].getFileName()}" width="300px">
+    <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
+    <p th:text="'Количество: ' + ${order.getCount()}"></p>
+    <p th:text="'Цена: ' + ${order.getPrice()}"></p>
+    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+    <p th:text="'Статус: ' + ${order.getStatus()}"></p>
+    <form th:method="POST" th:action="@{/admin/orders/changeStatus/{id}(id = ${order.getId()})}">
+        <fieldset>
+            <input th:name="status" type="radio" id="1" name="status" value="1">
+            <label for="1">Принят</label>
+            <input th:name="status" type="radio" id="2" name="status" value="2">
+            <label for="2">Оформлен</label>
+            <input th:name="status" type="radio" id="3" name="status" value="3">
+            <label for="3">Ожидает</label>
+            <input th:name="status" type="radio" id="4" name="status" value="4">
+            <label for="4">Получен</label>
+            <input th:name="status" type="radio" id="5" name="status" value="5">
+            <label for="5">Отменен</label>
+            <input type="submit">
+        </fieldset>
+    </form>
+    <hr>
+</div>
+</body>
+</html>
